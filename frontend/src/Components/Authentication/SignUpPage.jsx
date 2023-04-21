@@ -23,6 +23,7 @@ const SignUpPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(name, email, password, confirmPassword, pic);
   };
   return (
     <>
