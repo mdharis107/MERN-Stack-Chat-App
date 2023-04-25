@@ -2,6 +2,7 @@ const express = require("express");
 const { chats } = require("./data/data");
 const cors = require("cors");
 const { connection } = require("./config/db");
+const colors = require("colors");
 require("dotenv").config();
 
 const app = express();
@@ -25,10 +26,12 @@ app.get("/api/chat/:id", (req, res) => {
 app.listen(PORT, async () => {
   try {
     await connection;
-    console.log("Connected to the Database");
+    console.log(
+      `MongoDB Connected: ${(await connection).connection.host}`.cyan.underline
+    );
   } catch (err) {
     console.log(err);
-    console.log("Failed connecting to Database");
+    console.log(`Error: ${err.message}`.red.bold);
   }
-  console.log(`Server is listening on PORT ${PORT}`);
+  console.log(`Server is listening on PORT ${PORT}`.cyan.bold);
 });
