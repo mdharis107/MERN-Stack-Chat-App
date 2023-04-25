@@ -1,6 +1,7 @@
 const express = require("express");
 const { chats } = require("./data/data");
 const cors = require("cors");
+const { connection } = require("./config/db");
 require("dotenv").config();
 
 const app = express();
@@ -21,4 +22,13 @@ app.get("/api/chat/:id", (req, res) => {
   res.send(singleChat);
 });
 
-app.listen(PORT, console.log(`Server is listening on PORT ${PORT}`));
+app.listen(PORT, async () => {
+  try {
+    await connection;
+    console.log("Connected to the Database");
+  } catch (err) {
+    console.log(err);
+    console.log("Failed connecting to Database");
+  }
+  console.log(`Server is listening on PORT ${PORT}`);
+});
