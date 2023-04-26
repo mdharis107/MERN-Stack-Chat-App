@@ -5,6 +5,7 @@ const { connection } = require("./config/db");
 const colors = require("colors");
 const { UserRouter } = require("./routes/user.routes");
 const { authentication } = require("./middlewares/authentication");
+const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
 require("dotenv").config();
 
 const app = express();
@@ -20,6 +21,10 @@ app.get("/", (req, res) => {
 app.use("/user", UserRouter);
 
 // app.use(authentication);
+
+app.use(notFound)
+
+app.use(errorHandler)
 
 app.listen(PORT, async () => {
   try {
