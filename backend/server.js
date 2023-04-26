@@ -3,25 +3,23 @@ const { chats } = require("./data/data");
 const cors = require("cors");
 const { connection } = require("./config/db");
 const colors = require("colors");
+const { UserRouter } = require("./routes/user.routes");
+const { authentication } = require("./middlewares/authentication");
 require("dotenv").config();
 
 const app = express();
+app.use(express.json());
 app.use(cors());
 
 const PORT = process.env.PORT || 8000;
 
 app.get("/", (req, res) => {
-  res.send("this is the Home page");
+  res.send("This is the Home page");
 });
 
-app.get("/api/chat", (req, res) => {
-  res.send(chats);
-});
+app.use("/user", UserRouter);
 
-app.get("/api/chat/:id", (req, res) => {
-  const singleChat = chats.find((c) => c._id === req.params.id);
-  res.send(singleChat);
-});
+// app.use(authentication);
 
 app.listen(PORT, async () => {
   try {
