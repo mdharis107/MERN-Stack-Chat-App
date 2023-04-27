@@ -6,20 +6,20 @@ const RegisterUser = async (req, res) => {
   const { name, email, password, pic } = req.body;
 
   if (!name || !email || !password) {
-    res.status(400);
-    throw new Error("Please Enter all the Credentials");
+    res.status(400).send({ message: "Please Enter all the Credentials" });
+    // throw new Error("Please Enter all the Credentials");
   }
 
   const userExists = await UserModel.findOne({ email });
 
   if (userExists) {
-    res.status(400);
-    throw new Error("User already Exists");
+    res.status(400).send({ message: "User already Exists" });
+    // throw new Error("User already Exists");
   } else {
     bcrypt.hash(password, 6, async function (err, hash) {
       if (err) {
-        res.status(400);
-        throw new Error("Something went wrong");
+        res.status(400).send({ message: "Something went wrong" });
+        // throw new Error("Something went wrong");
       }
       const user = new UserModel({
         name,
@@ -38,8 +38,8 @@ const RegisterUser = async (req, res) => {
           token: generateToken(user._id),
         });
       } else {
-        res.status(400);
-        throw new Error("Failed to create the User");
+        res.status(400).send({ message: "Failed to create the User" });
+        // throw new Error("Failed to create the User");
       }
     });
   }
@@ -62,13 +62,16 @@ const loginUser = async (req, res) => {
           token: generateToken(user._id),
         });
       } else {
-        res.status(400);
-        throw new Error("Wrong credentials, Please try again");
+        res
+          .status(400)
+          .send({ message: "Wrong credentials, Please try again" });
+        // throw new Error("Wrong credentials, Please try again");
       }
     });
   } else {
-    res.status(400);
-    throw new Error("User doesn't Exist");
+    res.status(400).send({ message: "User doesn't Exist" });
+
+    // throw new Error("User doesn't Exist");
   }
 };
 
