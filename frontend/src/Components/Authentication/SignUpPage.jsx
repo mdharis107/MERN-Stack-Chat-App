@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 const SignUpPage = () => {
@@ -22,6 +23,7 @@ const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const [pic, setPic] = useState();
   const [picLoading, setPicLoading] = useState(false);
+  const navigate = useNavigate();
   const toast = useToast();
 
   const handleSubmit = async (e) => {
@@ -73,6 +75,7 @@ const SignUpPage = () => {
         position: "bottom",
       });
       localStorage.setItem("userInfo", JSON.stringify(data));
+      navigate("/chats");
       setPicLoading(false);
     } catch (err) {
       toast({
@@ -99,7 +102,7 @@ const SignUpPage = () => {
       });
       return;
     }
-    console.log(pics, "here");
+    // console.log(pics, "here");
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
       const data = new FormData();
       data.append("file", pics);
