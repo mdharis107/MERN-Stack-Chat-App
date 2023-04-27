@@ -19,14 +19,6 @@ const authentication = (req, res, next) => {
       next();
     }
   });
-  //   jwt.verify(token, process.env.PRIVATE_key, function (err, decoded) {
-  //     if (err) {
-  //       res.send({ msg: "Something went wrong, Please try again" });
-  //     } else {
-  //       req.body.userId = decoded.userId;
-  //       next();
-  //     }
-  //   });
 };
 
 module.exports = { authentication };

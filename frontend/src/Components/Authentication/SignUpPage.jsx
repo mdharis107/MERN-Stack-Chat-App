@@ -8,23 +8,130 @@ import {
   Button,
   VStack,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [password, setPassword] = useState("");
   const [pic, setPic] = useState();
+  const [picLoading, setPicLoading] = useState(false);
+  const toast = useToast();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(name, email, password, confirmPassword, pic);
+    setPicLoading(true);
+    if (!name || !email || !password || !confirmPassword) {
+      toast({
+        title: "Please fill all the fields",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setPicLoading(false);
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast({
+        title: "Password Do Not Match",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setPicLoading(false);
+      return;
+    }
+    try {
+      const config = {
+        headers: {
+          "COntent-type": "application/json",
+        },
+      };
+      const { data } = await axios.post(
+        "http://localhost:8080/user/signup",
+        {
+          name,
+          email,
+          password,
+          pic,
+        },
+        config
+      );
+      toast({
+        title: "Registration Successful",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      setPicLoading(false);
+    } catch (err) {
+      toast({
+        title: "Error Occurred",
+        description: err.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setPicLoading(false);
+    }
   };
+
+  const postDetails = (pics) => {
+    setPicLoading(true);
+    if (pics === undefined) {
+      toast({
+        title: "PLease select an Image!",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+    console.log(pics, "here");
+    if (pics.type === "image/jpeg" || pics.type === "image/png") {
+      const data = new FormData();
+      data.append("file", pics);
+      data.append("upload_preset", "mern-chat-app");
+      data.append("cloud_name", "dpr1ozsso");
+      fetch("https://api.cloudinary.com/v1_1/dpr1ozsso/image/upload", {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setPic(data.url.toString());
+          // console.log(data);
+          setPicLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setPicLoading(false);
+        });
+    } else {
+      toast({
+        title: "PLease select an Image!",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setPicLoading(false);
+      return;
+    }
+  };
+
   return (
     <>
       <form action="" onSubmit={handleSubmit}>
@@ -101,7 +208,7 @@ const SignUpPage = () => {
           <FormControl id="pic">
             <FormLabel>Upload your Picture</FormLabel>
             <Input
-              onChange={(e) => setPic(e.target.files[0])}
+              onChange={(e) => postDetails(e.target.files[0])}
               name="pic"
               type="file"
               p={1}
@@ -113,13 +220,15 @@ const SignUpPage = () => {
           <Button
             type="submit"
             w={"100%"}
-            loadingText="Submitting"
+            isLoading={picLoading}
             size="md"
             bg={"blue.400"}
             color={"white"}
             _hover={{
               bg: "blue.500",
             }}
+            loadingText="loading"
+            onClick={handleSubmit}
           >
             Sign up
           </Button>

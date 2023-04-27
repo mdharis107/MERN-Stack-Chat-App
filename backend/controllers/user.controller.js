@@ -53,12 +53,6 @@ const loginUser = async (req, res) => {
   if (user) {
     const hash = user.password;
     bcrypt.compare(password, hash, function (err, result) {
-      if (err) {
-        console.log(err);
-        res.status(400).send("check your password");
-        // throw new Error("Something went wrong");
-      }
-
       if (result) {
         res.status(201).send({
           _id: user._id,
@@ -67,6 +61,9 @@ const loginUser = async (req, res) => {
           pic: user.pic,
           token: generateToken(user._id),
         });
+      } else {
+        res.status(400);
+        throw new Error("Wrong credentials, Please try again");
       }
     });
   } else {

@@ -22,9 +22,9 @@ app.use("/user", UserRouter);
 
 // app.use(authentication);
 
-app.use(notFound)
+app.use(notFound);
 
-app.use(errorHandler)
+app.use(errorHandler);
 
 app.listen(PORT, async () => {
   try {
