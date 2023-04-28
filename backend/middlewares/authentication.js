@@ -1,24 +1,27 @@
 const jwt = require("jsonwebtoken");
-const { verifyToken } = require("../config/GenerateToken");
+const { UserModel } = require("../models/user.model");
 require("dotenv").config();
 
-const authentication = (req, res, next) => {
-  if (!req.headers.authorization) {
-    return res.status(401).send({ msg: "Please login" });
-  }
+const authentication = async (req, res, next) => {
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
 
-  const token = req.headers.authorization;
-
-  verifyToken(token, function (err, decoded) {
-    if (err) {
-      console.log(err);
-      res.status(400);
-      throw new Error("Enter the correct Credentials");
-    } else {
-      console.log(decoded);
+      const decoded = jwt.verify(token, process.env.JWT_KEY);
+      req.user = await UserModel.findById(decoded.id).select("-password");
       next();
+    } catch (err) {
+      console.log(err);
+      res.status(401).send({ message: "Not authorized" });
     }
-  });
+  }
+  if (!token) {
+    res.status(401).send({ message: "Not authorized, no token" });
+  }
 };
 
 module.exports = { authentication };
