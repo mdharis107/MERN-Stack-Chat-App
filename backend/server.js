@@ -6,6 +6,7 @@ const colors = require("colors");
 const { UserRouter } = require("./routes/user.routes");
 const { authentication } = require("./middlewares/authentication");
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
+const { ChatsRouter } = require("./routes/chats.routes");
 require("dotenv").config();
 
 const app = express();
@@ -20,7 +21,9 @@ app.get("/", (req, res) => {
 
 app.use("/user", UserRouter);
 
-// app.use(authentication);
+app.use(authentication);
+
+app.use("/chats", ChatsRouter);
 
 app.use(notFound);
 
