@@ -47,7 +47,24 @@ const accessChat = async (req, res) => {
   }
 };
 
-const fetchChats = () => {};
+const fetchChats = async (req, res) => {
+  try {
+    ChatModel.find({ users: { $elemMatch: { $eq: req.user._id } } })
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password")
+      .populate("latestMessage")
+      .sort({ updatedAt: -1 })
+      .then(async (results) => {
+        results = await UserModel.populate(results, {
+          path: "latestMessage.sender",
+          select: "name pic email",
+        });
+        res.status(200).send(results);
+      });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+};
 
 const createGroupChats = () => {};
 
