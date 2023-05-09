@@ -19,7 +19,9 @@ const HomePage = () => {
 
   useEffect(() => {
     const user = loadData("userInfo");
-    if (user) navigate("/chats");
+    if (user) {
+      navigate("/chats");
+    }
   }, [navigate]);
 
   return (
