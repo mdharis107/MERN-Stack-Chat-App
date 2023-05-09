@@ -66,7 +66,40 @@ const fetchChats = async (req, res) => {
   }
 };
 
-const createGroupChats = () => {};
+const createGroupChats = async (req, res) => {
+  if (!req.body.users || !req.body.name) {
+    res.status(400).send({ message: "Please fill all the Fields" });
+  }
+
+  var users = JSON.parse(req.body.users);
+
+  if (users.length < 2) {
+    res
+      .status(401)
+      .send({ message: "Minimum of two Users are required to form a Group" });
+  }
+
+  users.push(req.users);
+
+  try {
+    const groupChat = await ChatModel.create({
+      chatName: req.body.name,
+      users: users,
+      isGroupChat: true,
+      groupAdmin: req.user,
+    });
+
+    const fullGroupChat = await ChatModel.findOne({
+      _id: groupChat._id,
+    })
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+
+    res.status(200).send(fullGroupChat);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+};
 
 const renameGroup = () => {};
 
