@@ -14,6 +14,7 @@ import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { saveData } from "../../utils/localStorage";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -59,7 +60,8 @@ const Login = () => {
         isClosable: true,
         position: "bottom",
       });
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      // localStorage.setItem("userInfo", JSON.stringify(data));
+      saveData("userInfo", data);
       setLoading(false);
       navigate("/chats");
     } catch (err) {
