@@ -101,7 +101,27 @@ const createGroupChats = async (req, res) => {
   }
 };
 
-const renameGroup = () => {};
+const renameGroup = async (req, res) => {
+  const { chatId, chatName } = req.body;
+
+  const updatedChat = await ChatModel.findByIdAndUpdate(
+    chatId,
+    {
+      chatName,
+    },
+    {
+      new: true,
+    }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password");
+
+  if (!updatedChat) {
+    res.status(404).send({ message: "Chat not Found" });
+  } else {
+    res.status(201).send(updatedChat);
+  }
+};
 
 const removeFromGroup = () => {};
 

@@ -18,8 +18,9 @@ ChatsRouter.post("/group", createGroupChats);
 
 ChatsRouter.put("/rename", renameGroup);
 
+ChatsRouter.put("/groupadd", addToGroup);
+
 ChatsRouter.put("/groupremove", removeFromGroup);
 
-ChatsRouter.put("/groupadd", addToGroup);
 
 module.exports = { ChatsRouter };
