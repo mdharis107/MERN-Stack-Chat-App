@@ -123,9 +123,49 @@ const renameGroup = async (req, res) => {
   }
 };
 
-const removeFromGroup = () => {};
+const addToGroup = async (req, res) => {
+  const { userId, chatId } = req.body;
 
-const addToGroup = () => {};
+  const addedUser =await ChatModel.findByIdAndUpdate(
+    chatId,
+    {
+      $push: { users: userId },
+    },
+    {
+      new: true,
+    }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password");
+
+  if (!addedUser) {
+    res.status(404).send({ message: "Chat not Found" });
+  } else {
+    res.status(200).send(addedUser);
+  }
+};
+
+// const removeFromGroup = async (req, res) => {
+//   const { userId, chatId } = req.body;
+
+//   const removeUser = await ChatModel.findByIdAndUpdate(
+//     chatId,
+//     {
+//       $pull: { users: userId },
+//     },
+//     {
+//       new: true,
+//     }
+//   )
+//     .populate("users", "-password")
+//     .populate("groupAdmin", "-password");
+
+//   if (!removeUser) {
+//     res.status(404).send({ message: "Chat not Found" });
+//   } else {
+//     res.status(200).send(removeUser);
+//   }
+// };
 
 module.exports = {
   accessChat,
