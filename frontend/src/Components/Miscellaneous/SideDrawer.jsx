@@ -1,21 +1,26 @@
-import { BellIcon, Search2Icon } from "@chakra-ui/icons";
+import { BellIcon, ChevronDownIcon, Search2Icon } from "@chakra-ui/icons";
 import {
+  Avatar,
   Box,
   Button,
-  Heading,
   Menu,
   MenuButton,
+  MenuDivider,
+  MenuItem,
   MenuList,
   Text,
   Tooltip,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { ChatState } from "../../Context/ChatProvider";
+import ProfileModal from "./ProfileModal";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState();
+  const { user } = ChatState();
 
   return (
     <>
@@ -34,19 +39,44 @@ const SideDrawer = () => {
           placement="bottom-end"
           aria-label="A tooltip"
         >
-          <Button leftIcon={<Search2Icon />} variant={"ghost"}>
-            <Text display={{ base: "none", md: "flex" }} px="4">
+          <Button w={"auto"} leftIcon={<Search2Icon />} variant={"ghost"}>
+            <Text
+              ml={-5}
+              fontSize={"15px"}
+              fontWeight={"500"}
+              display={{ base: "none", md: "flex" }}
+              px="4"
+            >
               Search User
             </Text>
           </Button>
         </Tooltip>
-        <Heading>MERN-CHAT</Heading>
-        <Menu>
-          <MenuButton p={1}>
-            <BellIcon boxSize={5} m={1} />
-          </MenuButton>
-          <MenuList></MenuList>
-        </Menu>
+        <Text>MERN-CHAT</Text>
+        <Box flexDirection={"row"} gap={5}>
+          <Menu>
+            <MenuButton p={1}>
+              <BellIcon boxSize={5} m={1} />
+            </MenuButton>
+            <MenuList></MenuList>
+          </Menu>
+          <Menu>
+            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+              <Avatar
+                size={"sm"}
+                cursor={"pointer"}
+                name={user.name}
+                src={user.pic}
+              />
+            </MenuButton>
+            <MenuList>
+              <ProfileModal user={user}>
+                <MenuItem>My Profile</MenuItem>
+              </ProfileModal>
+              <MenuDivider />
+              <MenuItem>Logout</MenuItem>
+            </MenuList>
+          </Menu>
+        </Box>
       </Box>
     </>
   );
