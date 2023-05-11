@@ -13,22 +13,76 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Spinner,
+  Center,
+  Box,
 } from "@chakra-ui/react";
 import { ChatState } from "../../../Context/ChatProvider";
+import axios from "axios";
+import UserListItem from "../../UserComponents/UserListItem";
+import UserBadgeItem from "../../UserComponents/UserBadgeItem";
 
 const GroupChatModal = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState();
-  const [selectedUsers, setSelectedUsers] = useState();
-  const [search, setSearch] = useState();
-  const [searchResult, setSearchResult] = useState();
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [search, setSearch] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState();
   const toast = useToast();
 
   const { user, chats, setChats } = ChatState();
 
-  const handleSearch = () => {};
+  const handleSearch = async (query) => {
+    setSearch(query);
+    if (!query) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.get(
+        `http://localhost:8080/user/allUser?search=${search}`,
+        config
+      );
+      //   console.log(data);
+      setLoading(false);
+      setSearchResult(data);
+    } catch (err) {
+      toast({
+        title: "Error Occurred!",
+        description: "Failed to Load the Search Results",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+    }
+  };
+
   const handleSubmit = () => {};
+
+  const handleGroup = (usersToAdd) => {
+    if (selectedUsers.includes(usersToAdd)) {
+      toast({
+        title: "User already added",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+      return;
+    }
+    setSelectedUsers([...selectedUsers, usersToAdd]);
+  };
+
+  const handleDelete = () => {};
 
   return (
     <>
@@ -64,17 +118,43 @@ const GroupChatModal = ({ children }) => {
             <FormControl>
               <FormLabel>Add Users</FormLabel>
               <Input
+                // mb={5}
                 placeholder="Add Users eg: John, Haris"
                 type="email"
                 onChange={(e) => handleSearch(e.target.value)}
               />
-              {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
+              {/* Selected Users */}
+              <Box display={"flex"} flexWrap={"wrap"}>
+                {selectedUsers.map((ele) => (
+                  <UserBadgeItem
+                    key={ele._id}
+                    user={ele}
+                    handleFunction={() => handleDelete(ele)}
+                  />
+                ))}
+              </Box>
+
+              {loading ? (
+                <Center mt={2}>
+                  <Spinner thickness="3px" color="blue.500" size={"lg"} />
+                </Center>
+              ) : (
+                searchResult
+                  ?.slice(0, 4)
+                  .map((ele) => (
+                    <UserListItem
+                      user={ele}
+                      key={ele._id}
+                      handleFunction={() => handleGroup(ele)}
+                    />
+                  ))
+              )}
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
-              Close
+              Create
             </Button>
           </ModalFooter>
         </ModalContent>
