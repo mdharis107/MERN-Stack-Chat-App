@@ -74,7 +74,7 @@ const createGroupChats = async (req, res) => {
   var users = JSON.parse(req.body.users);
 
   if (users.length < 2) {
-    res
+    return res
       .status(401)
       .send({ message: "Minimum of two Users are required to form a Group" });
   }
@@ -126,7 +126,7 @@ const renameGroup = async (req, res) => {
 const addToGroup = async (req, res) => {
   const { userId, chatId } = req.body;
 
-  const addedUser =await ChatModel.findByIdAndUpdate(
+  const addedUser = await ChatModel.findByIdAndUpdate(
     chatId,
     {
       $push: { users: userId },
@@ -145,27 +145,27 @@ const addToGroup = async (req, res) => {
   }
 };
 
-// const removeFromGroup = async (req, res) => {
-//   const { userId, chatId } = req.body;
+const removeFromGroup = async (req, res) => {
+  const { userId, chatId } = req.body;
 
-//   const removeUser = await ChatModel.findByIdAndUpdate(
-//     chatId,
-//     {
-//       $pull: { users: userId },
-//     },
-//     {
-//       new: true,
-//     }
-//   )
-//     .populate("users", "-password")
-//     .populate("groupAdmin", "-password");
+  const removeUser = await ChatModel.findByIdAndUpdate(
+    chatId,
+    {
+      $pull: { users: userId },
+    },
+    {
+      new: true,
+    }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password");
 
-//   if (!removeUser) {
-//     res.status(404).send({ message: "Chat not Found" });
-//   } else {
-//     res.status(200).send(removeUser);
-//   }
-// };
+  if (!removeUser) {
+    res.status(404).send({ message: "Chat not Found" });
+  } else {
+    res.status(200).send(removeUser);
+  }
+};
 
 module.exports = {
   accessChat,

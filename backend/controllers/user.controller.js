@@ -53,6 +53,11 @@ const loginUser = async (req, res) => {
   if (user) {
     const hash = user.password;
     bcrypt.compare(password, hash, function (err, result) {
+      if (err) {
+        console.log(err);
+        res.status(401).send(err);
+      }
+
       if (result) {
         res.status(201).send({
           _id: user._id,
