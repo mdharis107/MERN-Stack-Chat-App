@@ -9,6 +9,7 @@ import MyChats from "../Components/Miscellaneous/MyChats";
 import ChatBox from "../Components/Miscellaneous/ChatBox";
 
 const ChatPage = () => {
+  const [fetchAgain, setFetchAgain] = useState(false);
   const { user } = ChatState();
 
   return (
@@ -17,13 +18,18 @@ const ChatPage = () => {
       <Box
         color={"white"}
         display={"flex"}
+        gap={2}
         justifyContent={"space-between"}
         w={"100%"}
         h={"91.5vh"}
         p={"10px"}
       >
-        {user && <MyChats />}
-        {user && <ChatBox />}
+        {user && (
+          <MyChats fetchAgain={fetchAgain}  />
+        )}
+        {user && (
+          <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
+        )}
       </Box>
     </div>
   );

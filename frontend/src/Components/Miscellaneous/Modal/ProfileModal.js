@@ -63,23 +63,14 @@ const ProfileModal = ({ user, children }) => {
             >
               Email: {user.email}
             </Text>
-            {/* <FormControl>
-              <FormLabel>First name</FormLabel>
-              <Input placeholder="First name" />
-            </FormControl>
-
-            <FormControl mt={4}>
-              <FormLabel>Last name</FormLabel>
-              <Input placeholder="Last name" />
-            </FormControl> */}
           </ModalBody>
 
           <ModalFooter>
-            {/* <Button colorScheme="blue" mr={3}>
-              Save
-            </Button> */}
-            <Button onClick={onClose}>Close</Button>
+            <Button colorScheme="blue" onClick={onClose}>
+              Close
+            </Button>
           </ModalFooter>
+
         </ModalContent>
       </Modal>
     </>

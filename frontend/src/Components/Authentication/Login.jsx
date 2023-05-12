@@ -18,12 +18,9 @@ import { saveData } from "../../utils/localStorage";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState();
-  const [pic, setPic] = useState();
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -65,7 +62,7 @@ const Login = () => {
       setLoading(false);
       navigate("/chats");
     } catch (err) {
-      // console.log(err)
+      console.log(err)
       toast({
         title: "Error Occurred",
         description: err.response.data.message,

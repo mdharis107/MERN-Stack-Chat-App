@@ -11,9 +11,10 @@ const UserListItem = ({ user, handleFunction }) => {
       alignItems={"center"}
       bg={"blackAlpha.300"}
       gap={2}
-      mb={2}
+      // mb={2}
       px={3}
       py={2}
+      mt={2}
       w={"100%"}
       _hover={{
         background: "#3182CE",

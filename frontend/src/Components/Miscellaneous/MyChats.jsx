@@ -9,7 +9,7 @@ import ChatLoading from "./ChatLoading";
 import { getSender } from "../Config/Chatlogics";
 import GroupChatModal from "./Modal/GroupChatModal";
 
-const MyChats = () => {
+const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
   const toast = useToast();
@@ -18,12 +18,11 @@ const MyChats = () => {
     try {
       const config = {
         headers: {
-          "Content-type": "application/json",
           Authorization: `Bearer ${user.token}`,
         },
       };
       const { data } = await axios.get("http://localhost:8080/chats", config);
-      // console.log(data);
+      console.log(data);
       setChats(data);
     } catch (err) {
       toast({
@@ -39,9 +38,12 @@ const MyChats = () => {
 
   useEffect(() => {
     const userInfo = loadData("userInfo");
+    console.log(userInfo)
     setLoggedUser(userInfo);
     fetchChats();
-  }, []);
+  }, [fetchAgain]);
+
+  // console.log(userInfo);
 
   return (
     <Box
@@ -89,21 +91,22 @@ const MyChats = () => {
       >
         {chats ? (
           <Stack overflowY={"scroll"}>
-            {chats.map((ele) => (
+            {chats.map((chat) => (
               <Box
-                onClick={() => setSelectedChat(ele)}
+                onClick={() => setSelectedChat(chat)}
                 cursor={"pointer"}
-                bg={selectedChat === ele ? "#3182CE" : "blackAlpha.300"}
-                color={selectedChat === ele ? "white" : "black"}
+                bg={selectedChat === chat ? "#3182CE" : "blackAlpha.300"}
+                color={selectedChat === chat ? "white" : "black"}
                 borderRadius={"lg"}
-                key={ele._id}
+                key={chat._id}
                 px={3}
                 py={2}
               >
                 <Text>
-                  {!ele.isGroupChat
-                    ? getSender(loggedUser, ele.users)
-                    : ele.chatName}
+                  {/* {chat.chatName} */}
+                  {chat.isGroupChat
+                    ? chat.chatName
+                    : getSender(loggedUser, chat.users)}
                 </Text>
               </Box>
             ))}

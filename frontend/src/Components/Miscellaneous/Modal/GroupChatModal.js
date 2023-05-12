@@ -66,7 +66,55 @@ const GroupChatModal = ({ children }) => {
     }
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = async () => {
+    if (!groupChatName || !selectedUsers) {
+      toast({
+        title: "Please fill all the Fields",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+      return;
+    }
+
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const { data } = await axios.post(
+        "http://localhost:8080/chats/group",
+        {
+          name: groupChatName,
+          users: JSON.stringify(selectedUsers.map((ele) => ele._id)),
+        },
+        config
+      );
+      setChats([data, ...chats]);
+      onClose();
+      toast({
+        title: "New Group Chat created!",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+    } catch (err) {
+      console.log(err)
+      toast({
+        title: "Failed to create the Chat",
+        description: err.response.data.message,
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+    }
+  };
 
   const handleGroup = (usersToAdd) => {
     if (selectedUsers.includes(usersToAdd)) {
@@ -82,7 +130,9 @@ const GroupChatModal = ({ children }) => {
     setSelectedUsers([...selectedUsers, usersToAdd]);
   };
 
-  const handleDelete = () => {};
+  const handleDelete = (delUser) => {
+    setSelectedUsers(selectedUsers.filter((ele) => ele._id !== delUser._id));
+  };
 
   return (
     <>
@@ -134,6 +184,7 @@ const GroupChatModal = ({ children }) => {
                 ))}
               </Box>
 
+              {/* <Box mt={5}> */}
               {loading ? (
                 <Center mt={2}>
                   <Spinner thickness="3px" color="blue.500" size={"lg"} />
@@ -149,6 +200,7 @@ const GroupChatModal = ({ children }) => {
                     />
                   ))
               )}
+              {/* </Box> */}
             </FormControl>
           </ModalBody>
 
