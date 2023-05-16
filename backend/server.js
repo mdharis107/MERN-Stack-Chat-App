@@ -7,6 +7,7 @@ const { UserRouter } = require("./routes/user.routes");
 const { authentication } = require("./middlewares/authentication");
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
 const { ChatsRouter } = require("./routes/chats.routes");
+const { messageRouter } = require("./routes/message.routes");
 require("dotenv").config();
 
 const app = express();
@@ -24,6 +25,8 @@ app.use("/user", UserRouter);
 app.use(authentication);
 
 app.use("/chats", ChatsRouter);
+
+app.use("/message", messageRouter);
 
 app.use(notFound);
 
