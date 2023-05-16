@@ -74,7 +74,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const handleSearch = async (query) => {
     setSearch(query);
     if (!query) {
-      setSearchResult([])
+      setSearchResult([]);
       return;
     }
 
@@ -191,8 +191,11 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
       );
 
       user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
+
       setFetchAgain(!fetchAgain);
+
       fetchMessages();
+
       setLoading(false);
     } catch (error) {
       toast({
