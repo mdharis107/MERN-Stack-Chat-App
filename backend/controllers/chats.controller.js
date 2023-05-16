@@ -67,8 +67,10 @@ const fetchChats = async (req, res) => {
 };
 
 const createGroupChats = async (req, res) => {
+
+  // console.log(req.user,"groupAdmin")
   if (!req.body.users || !req.body.name) {
-    res.status(400).send({ message: "Please fill all the Fields" });
+    return res.status(400).send({ message: "Please fill all the Fields" });
   }
 
   var users = JSON.parse(req.body.users);
@@ -95,6 +97,7 @@ const createGroupChats = async (req, res) => {
       .populate("users", "-password")
       .populate("groupAdmin", "-password");
 
+    // console.log(users,"no of Users");
     res.status(200).send(fullGroupChat);
   } catch (err) {
     res.status(400).send(err);

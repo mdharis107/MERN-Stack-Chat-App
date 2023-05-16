@@ -91,7 +91,7 @@ const allUsers = async (req, res) => {
             email: { $regex: req.query.search, $options: "i" },
           },
         ],
-      }
+    }
     : {};
   const users = await UserModel.find(keyword).find({
     _id: { $ne: req.user._id },
