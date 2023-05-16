@@ -84,6 +84,7 @@ const SideDrawer = () => {
   const logoutHandler = () => {
     removeData("userInfo");
     navigate("/");
+    window.location.reload();
   };
 
   const accessChat = async (userId) => {
