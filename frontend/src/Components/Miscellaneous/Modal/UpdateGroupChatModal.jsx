@@ -74,6 +74,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const handleSearch = async (query) => {
     setSearch(query);
     if (!query) {
+      setSearchResult([])
       return;
     }
 
@@ -102,6 +103,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
       });
       setLoading(false);
     }
+    return;
   };
 
   const handleAddUser = async (userAdd) => {
