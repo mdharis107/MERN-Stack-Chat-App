@@ -69,6 +69,7 @@ const fetchChats = async (req, res) => {
 const createGroupChats = async (req, res) => {
 
   // console.log(req.user,"groupAdmin")
+
   if (!req.body.users || !req.body.name) {
     return res.status(400).send({ message: "Please fill all the Fields" });
   }
@@ -81,7 +82,7 @@ const createGroupChats = async (req, res) => {
       .send({ message: "Minimum of two Users are required to form a Group" });
   }
 
-  users.push(req.users);
+  users.push(req.user);
 
   try {
     const groupChat = await ChatModel.create({
