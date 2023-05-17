@@ -18,19 +18,20 @@ const sendMessage = async (req, res) => {
   try {
     var message = await MessageModel.create(newMessage);
 
-    message = await message.populate("sender", "name pic");
+    await message.populate("sender", "name pic");
 
-    // message = await message.populate("chat");
+    // await message.populate("chat");
 
-    message = await UserModel.populate(message, {
-      path: "chat.users",
-      select: "name pic email",
-    });
+    // await UserModel.populate(message, {
+    //   path: "chat.users",
+    //   select: "name pic email",
+    // });
 
     await ChatModel.findByIdAndUpdate(req.body.chatId, {
       latestMessage: message,
     });
-    res.json(message);
+
+    res.send(message);
   } catch (err) {
     res.status(400).send(err);
   }
