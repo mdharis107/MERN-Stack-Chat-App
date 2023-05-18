@@ -5,6 +5,7 @@ import {
   isLastMessage,
   isSameSender,
   isSameSenderMargin,
+  isSameUser,
 } from "./Config/Chatlogics";
 import { ChatState } from "../Context/ChatProvider";
 
@@ -42,6 +43,7 @@ const ScrollChat = ({ messages }) => {
                 maxWidth: "75%",
                 color: "black",
                 marginLeft: isSameSenderMargin(messages, ele, i, user._id),
+                marginTop: isSameUser(messages, ele, i, user._id) ? 3 : 10,
               }}
             >
               {ele.content}
