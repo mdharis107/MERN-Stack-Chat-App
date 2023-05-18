@@ -14,6 +14,8 @@ import { getSender, getSenderFull } from "./Config/Chatlogics";
 import ProfileModal from "./Miscellaneous/Modal/ProfileModal";
 import UpdateGroupChatModal from "./Miscellaneous/Modal/UpdateGroupChatModal";
 import axios from "axios";
+import "./styles/styles.css";
+import ScrollChat from "./ScrollChat";
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { user, selectedChat, setSelectedChat } = ChatState();
@@ -59,7 +61,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     setNewMessage(e.target.value);
   };
 
-  const fetchMessage = async () => {
+  const fetchMessages = async () => {
     if (!selectedChat) {
       return;
     }
@@ -92,7 +94,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
   useEffect(() => {
-    fetchMessage();
+    fetchMessages();
   }, [selectedChat]);
 
   return (
@@ -128,6 +130,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <UpdateGroupChatModal
                   fetchAgain={fetchAgain}
                   setFetchAgain={setFetchAgain}
+                  fetchMessages={fetchMessages}
                 />
               </>
             )}
@@ -153,7 +156,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 margin={"auto"}
               />
             ) : (
-              <div className="messages">{/* Messages */}</div>
+              <div className="messages">
+                {/* Messages */}
+                <ScrollChat messages={messages} />
+              </div>
             )}
             <FormControl isRequired mt={3}>
               {/* <FormLabel>Email address</FormLabel> */}
