@@ -32,7 +32,7 @@ app.use(notFound);
 
 app.use(errorHandler);
 
-app.listen(PORT, async () => {
+const server = app.listen(PORT, async () => {
   try {
     await connection;
     console.log(
@@ -43,4 +43,15 @@ app.listen(PORT, async () => {
     console.log(`Error: ${err.message}`.red.bold);
   }
   console.log(`Server is listening on PORT ${PORT}`.cyan.bold);
+});
+
+const io = require("socket.io")(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("Connected to socket.io");
 });

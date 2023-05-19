@@ -22,10 +22,10 @@ const sendMessage = async (req, res) => {
 
     // await message.populate("chat");
 
-    // await UserModel.populate(message, {
-    //   path: "chat.users",
-    //   select: "name pic email",
-    // });
+    await UserModel.populate(message, {
+      path: "chat.users",
+      select: "name pic email",
+    });
 
     await ChatModel.findByIdAndUpdate(req.body.chatId, {
       latestMessage: message,
@@ -37,6 +37,19 @@ const sendMessage = async (req, res) => {
   }
 };
 
-const allMessages = async (req, res) => {};
+const allMessages = async (req, res) => {
+  // const {} = req.body;
+
+  try {
+    const messages = await MessageModel.find({
+      chat: req.params.chatId,
+    }).populate("sender", "name pic email");
+    // .populate("chat");
+
+    res.send(messages);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+};
 
 module.exports = { sendMessage, allMessages };
