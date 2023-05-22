@@ -25,6 +25,7 @@ const ScrollChat = ({ messages }) => {
                 hasArrow
               >
                 <Avatar
+                  mr={2}
                   mt={"7px"}
                   size={"sm"}
                   cursor={"pointer"}
