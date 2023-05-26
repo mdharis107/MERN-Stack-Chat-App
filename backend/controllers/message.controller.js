@@ -27,35 +27,10 @@ const sendMessage = async (req, res) => {
     await message.populate("sender", "name pic");
     await message.populate("chat");
 
-    // var message = await MessageModel.create(newMessage);
-
-    // await message
-    //   .populate({ path: "sender", select: "name pic" })
-    //   .populate("chat");
-
-    // await message.populate({ path: "chat", select: "isGroupChat chatName" });
-
-    // const data = await message.aggregate([
-    //   {
-    //     $lookup: {
-    //       from: message,
-    //       localField: "_id",
-    //       foreignField: "_id",
-    //       as: "chat",
-    //     },
-    //   },
-    // ]);
-
-    // console.log(data);
-
-    // console.log(message);
-
-     await UserModel.populate(message, {
+    await UserModel.populate(message, {
       path: "chat.users",
       select: "name pic email",
     });
-
-    // console.log(message, "here");
 
     await ChatModel.findByIdAndUpdate(req.body.chatId, {
       latestMessage: message,

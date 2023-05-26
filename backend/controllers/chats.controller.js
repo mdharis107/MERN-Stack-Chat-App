@@ -5,7 +5,6 @@ const accessChat = async (req, res) => {
   const { userId } = req.body;
 
   if (!userId) {
-    // console.log("UerId params not sent with request")
     res.status(400).send("UerId params not sent with request");
   }
 
@@ -68,7 +67,6 @@ const fetchChats = async (req, res) => {
 
 const createGroupChats = async (req, res) => {
 
-  // console.log(req.user,"groupAdmin")
 
   if (!req.body.users || !req.body.name) {
     return res.status(400).send({ message: "Please fill all the Fields" });
@@ -98,7 +96,6 @@ const createGroupChats = async (req, res) => {
       .populate("users", "-password")
       .populate("groupAdmin", "-password");
 
-    // console.log(users,"no of Users");
     res.status(200).send(fullGroupChat);
   } catch (err) {
     res.status(400).send(err);
