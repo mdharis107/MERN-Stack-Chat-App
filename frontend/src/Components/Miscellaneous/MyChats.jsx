@@ -22,7 +22,6 @@ const MyChats = ({ fetchAgain }) => {
         },
       };
       const { data } = await axios.get("http://localhost:8080/chats", config);
-      // console.log(data);
       setChats(data);
     } catch (err) {
       toast({
@@ -38,12 +37,10 @@ const MyChats = ({ fetchAgain }) => {
 
   useEffect(() => {
     const userInfo = loadData("userInfo");
-    // console.log(userInfo)
     setLoggedUser(userInfo);
     fetchChats();
   }, [fetchAgain]);
 
-  // console.log(userInfo);
 
   return (
     <Box

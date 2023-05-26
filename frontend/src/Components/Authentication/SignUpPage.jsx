@@ -102,7 +102,6 @@ const SignUpPage = () => {
       });
       return;
     }
-    // console.log(pics, "here");
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
       const data = new FormData();
       data.append("file", pics);
@@ -115,7 +114,6 @@ const SignUpPage = () => {
         .then((res) => res.json())
         .then((data) => {
           setPic(data.url.toString());
-          // console.log(data);
           setPicLoading(false);
         })
         .catch((err) => {

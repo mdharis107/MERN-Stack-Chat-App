@@ -53,7 +53,6 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         config
       );
 
-      console.log(data._id);
       setSelectedChat(data);
       setFetchAgain(!fetchAgain);
       setRenameLoading(false);
@@ -89,7 +88,6 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         `http://localhost:8080/user/allUser?search=${search}`,
         config
       );
-      // console.log(data);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {

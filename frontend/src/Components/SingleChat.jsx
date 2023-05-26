@@ -24,7 +24,8 @@ const ENDPOINT = "http://localhost:8080";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
-  const { user, selectedChat, setSelectedChat } = ChatState();
+  const { user, selectedChat, setSelectedChat, notification, setNotification } =
+    ChatState();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState();
@@ -61,7 +62,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-        console.log(data);
         socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (err) {
@@ -118,7 +118,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         `http://localhost:8080/message/${selectedChat._id}`,
         config
       );
-      console.log(messages);
       setMessages(data);
       setLoading(false);
 
@@ -149,6 +148,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     selectedChatCompare = selectedChat;
   }, [selectedChat]);
 
+
   useEffect(() => {
     socket.on("message received", (newMessageReceived) => {
       if (
@@ -156,6 +156,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         selectedChatCompare._id !== newMessageReceived.chat._id
       ) {
         //give Notification
+        if (!notification.includes(newMessageReceived)) {
+          setNotification([newMessageReceived, ...notification]);
+          setFetchAgain(!fetchAgain);
+        }
       } else {
         setMessages([...messages, newMessageReceived]);
       }

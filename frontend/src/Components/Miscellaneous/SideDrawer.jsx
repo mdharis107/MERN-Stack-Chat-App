@@ -30,6 +30,9 @@ import { removeData } from "../../utils/localStorage";
 import axios from "axios";
 import ChatLoading from "./ChatLoading";
 import UserListItem from "../UserComponents/UserListItem";
+import { getSender } from "../Config/Chatlogics";
+import NotificationBadge from "react-notification-badge";
+import { Effect } from "react-notification-badge";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
@@ -38,7 +41,14 @@ const SideDrawer = () => {
   const [loadingChat, setLoadingChat] = useState();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-  const { user, setSelectedChat, chats, setChats } = ChatState();
+  const {
+    user,
+    setSelectedChat,
+    chats,
+    setChats,
+    notification,
+    setNotification,
+  } = ChatState();
   const navigate = useNavigate();
 
   const handleSearch = async () => {
@@ -159,9 +169,28 @@ const SideDrawer = () => {
         <Box flexDirection={"row"} gap={5}>
           <Menu>
             <MenuButton p={1}>
+              <NotificationBadge
+                count={notification.length}
+                effect={Effect.SCALE}
+              />
               <BellIcon boxSize={5} m={1} />
             </MenuButton>
-            <MenuList></MenuList>
+            <MenuList pl={2}>
+              {!notification.length && "No New Messages"}
+              {notification.map((ele) => (
+                <MenuItem
+                  key={ele._id}
+                  onClick={() => {
+                    setSelectedChat(ele.chat);
+                    setNotification(notification.filter((n) => n !== ele));
+                  }}
+                >
+                  {ele.chat.isGroupChat
+                    ? `New Message in ${ele.chat.chatName}`
+                    : `New Message from ${getSender(user, ele.chat.users)}`}
+                </MenuItem>
+              ))}
+            </MenuList>
           </Menu>
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>

@@ -51,7 +51,6 @@ const GroupChatModal = ({ children }) => {
         `http://localhost:8080/user/allUser?search=${search}`,
         config
       );
-      //   console.log(data);
       setLoading(false);
       setSearchResult(data);
     } catch (err) {
@@ -104,7 +103,6 @@ const GroupChatModal = ({ children }) => {
         position: "bottom-left",
       });
     } catch (err) {
-      console.log(err)
       toast({
         title: "Failed to create the Chat",
         description: err.response.data.message,
