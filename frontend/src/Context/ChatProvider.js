@@ -14,7 +14,6 @@ const ChatProvider = ({ children }) => {
   useEffect(() => {
     const userInfo = loadData("userInfo");
     setUser(userInfo);
-    // console.log(userInfo);
 
     if (!userInfo) {
       navigate("/");
