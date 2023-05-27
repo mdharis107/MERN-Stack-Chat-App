@@ -52,9 +52,13 @@ const io = require("socket.io")(server, {
   },
 });
 
+// io.set('origins', '*:*');
+
 io.on("connection", (socket) => {
   console.log("Connected to socket.io");
 
+  io.set('origins', '*:*');
+  
   socket.on("setup", (userData) => {
     socket.join(userData._id);
     socket.emit("connected");
