@@ -21,7 +21,7 @@ import Lottie from "react-lottie";
 import animationData from "./animation/typing.json";
 import Sound from "../Components/Sound/Notification.wav";
 
-const ENDPOINT = "https://frontend-mdharis107.vercel.app/";
+const ENDPOINT = "https://mern-chat-app-qm6p.onrender.com/";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
