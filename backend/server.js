@@ -48,7 +48,7 @@ const server = app.listen(PORT, async () => {
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "https://frontend-mdharis107.vercel.app",
+    origin: "http://localhost:3000",
   },
 });
 
