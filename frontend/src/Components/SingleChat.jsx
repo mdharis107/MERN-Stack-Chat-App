@@ -19,8 +19,9 @@ import ScrollChat from "./ScrollChat";
 import io from "socket.io-client";
 import Lottie from "react-lottie";
 import animationData from "./animation/typing.json";
+import Sound from "../Components/Sound/Notification.wav";
 
-const ENDPOINT = "http://localhost:8080";
+const ENDPOINT = "https://frontend-mdharis107.vercel.app/";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -33,6 +34,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const toast = useToast();
+
+  const play = () => {
+    new Audio(Sound).play();
+  };
 
   const defaultOptions = {
     loop: true,
@@ -62,6 +67,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
+        play();
         socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (err) {

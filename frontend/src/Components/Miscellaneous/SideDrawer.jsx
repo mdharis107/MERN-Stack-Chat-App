@@ -32,6 +32,7 @@ import UserListItem from "../UserComponents/UserListItem";
 import { getSender } from "../Config/Chatlogics";
 import NotificationBadge from "react-notification-badge";
 import { Effect } from "react-notification-badge";
+import Sound from "../Sound/Notification.wav";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
@@ -48,8 +49,12 @@ const SideDrawer = () => {
     notification,
     setNotification,
   } = ChatState();
-  
+
   const navigate = useNavigate();
+
+  const play = () => {
+    new Audio(Sound).play();
+  };
 
   const handleSearch = async () => {
     if (!search) {
@@ -183,6 +188,7 @@ const SideDrawer = () => {
                   onClick={() => {
                     setSelectedChat(ele.chat);
                     setNotification(notification.filter((n) => n !== ele));
+                    play();
                   }}
                 >
                   {ele.chat.isGroupChat
