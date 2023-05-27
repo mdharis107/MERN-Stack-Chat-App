@@ -55,7 +55,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         };
         setNewMessage("");
         const { data } = await axios.post(
-          "http://localhost:8080/message",
+          "https://mern-chat-app-qm6p.onrender.com/message",
           {
             content: newMessage,
             chatId: selectedChat._id,
@@ -115,7 +115,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       };
       setLoading(true);
       const { data } = await axios.get(
-        `http://localhost:8080/message/${selectedChat._id}`,
+        `https://mern-chat-app-qm6p.onrender.com/message/${selectedChat._id}`,
         config
       );
       setMessages(data);
@@ -147,7 +147,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     fetchMessages();
     selectedChatCompare = selectedChat;
   }, [selectedChat]);
-
 
   useEffect(() => {
     socket.on("message received", (newMessageReceived) => {

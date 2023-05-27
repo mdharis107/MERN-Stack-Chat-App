@@ -21,7 +21,7 @@ const MyChats = ({ fetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get("http://localhost:8080/chats", config);
+      const { data } = await axios.get("https://mern-chat-app-qm6p.onrender.com/chats", config);
       setChats(data);
     } catch (err) {
       toast({

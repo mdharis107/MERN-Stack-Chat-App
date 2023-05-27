@@ -7,7 +7,6 @@ import {
   InputRightElement,
   Button,
   VStack,
-  Stack,
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
@@ -58,7 +57,7 @@ const SignUpPage = () => {
         },
       };
       const { data } = await axios.post(
-        "http://localhost:8080/user/signup",
+        "https://mern-chat-app-qm6p.onrender.com/user/signup",
         {
           name,
           email,

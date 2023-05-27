@@ -12,7 +12,6 @@ import {
   Tooltip,
   Drawer,
   DrawerBody,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
@@ -49,6 +48,7 @@ const SideDrawer = () => {
     notification,
     setNotification,
   } = ChatState();
+  
   const navigate = useNavigate();
 
   const handleSearch = async () => {
@@ -73,7 +73,7 @@ const SideDrawer = () => {
       };
 
       const { data } = await axios.get(
-        `http://localhost:8080/user/allUser?search=${search}`,
+        `https://mern-chat-app-qm6p.onrender.com/user/allUser?search=${search}`,
         config
       );
 
@@ -108,7 +108,7 @@ const SideDrawer = () => {
       };
 
       const { data } = await axios.post(
-        "http://localhost:8080/chats",
+        "https://mern-chat-app-qm6p.onrender.com/chats",
         { userId },
         config
       );

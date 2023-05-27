@@ -48,7 +48,7 @@ const GroupChatModal = ({ children }) => {
         },
       };
       const { data } = await axios.get(
-        `http://localhost:8080/user/allUser?search=${search}`,
+        `https://mern-chat-app-qm6p.onrender.com/user/allUser?search=${search}`,
         config
       );
       setLoading(false);
@@ -86,7 +86,7 @@ const GroupChatModal = ({ children }) => {
       };
 
       const { data } = await axios.post(
-        "http://localhost:8080/chats/group",
+        "https://mern-chat-app-qm6p.onrender.com/chats/group",
         {
           name: groupChatName,
           users: JSON.stringify(selectedUsers.map((ele) => ele._id)),

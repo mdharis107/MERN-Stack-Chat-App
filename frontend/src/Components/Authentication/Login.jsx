@@ -7,7 +7,6 @@ import {
   InputRightElement,
   Button,
   VStack,
-  Stack,
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
@@ -46,7 +45,7 @@ const Login = () => {
         },
       };
       const { data } = await axios.post(
-        "http://localhost:8080/user/login",
+        "https://mern-chat-app-qm6p.onrender.com/user/login",
         { email, password },
         config
       );
@@ -73,6 +72,7 @@ const Login = () => {
       setLoading(false);
     }
   };
+  
   return (
     <>
       <form action="" onSubmit={handleSubmit}>

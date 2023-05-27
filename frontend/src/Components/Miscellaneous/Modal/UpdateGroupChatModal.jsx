@@ -13,7 +13,6 @@ import {
   Button,
   Box,
   Input,
-  FormLabel,
   FormControl,
   Spinner,
 } from "@chakra-ui/react";
@@ -45,7 +44,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         },
       };
       const { data } = await axios.put(
-        `http://localhost:8080/chats/rename`,
+        `https://mern-chat-app-qm6p.onrender.com/chats/rename`,
         {
           chatId: selectedChat._id,
           chatName: groupChatName,
@@ -85,7 +84,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         },
       };
       const { data } = await axios.get(
-        `http://localhost:8080/user/allUser?search=${search}`,
+        `https://mern-chat-app-qm6p.onrender.com/user/allUser?search=${search}`,
         config
       );
       setLoading(false);
@@ -135,7 +134,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         },
       };
       const { data } = await axios.put(
-        `http://localhost:8080/chats/groupadd`,
+        `https://mern-chat-app-qm6p.onrender.com/chats/groupadd`,
         {
           chatId: selectedChat._id,
           userId: userAdd._id,
@@ -180,7 +179,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         },
       };
       const { data } = await axios.put(
-        `http://localhost:8080/chats/groupremove`,
+        `https://mern-chat-app-qm6p.onrender.com/chats/groupremove`,
         {
           chatId: selectedChat._id,
           userId: user1._id,
