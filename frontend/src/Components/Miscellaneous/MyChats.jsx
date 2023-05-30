@@ -55,7 +55,7 @@ const MyChats = ({ fetchAgain }) => {
       color={"black"}
     >
       <Box
-        // border={"1px solid red"}
+        // border={"1px solid "}
         fontFamily={"Work sans"}
         fontSize={{ base: "20px", md: "20px" }}
         display={"flex"}
